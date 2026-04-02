@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarot With Priestess</title>
+  <meta name="description" content="Tarot readings with Priestess. Go underneath — explore life, love, career, and purpose through the art of tarot.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #d4b96a;
+      --cream: #f5f0e8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      background: #020304;
+      color: #d4cfc5;
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Parallax ocean background */
+    .parallax-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 0;
+      background: #020304 url('images/ChatGPT Image Apr 1, 2026, 08_31_10 PM.png') center top / cover no-repeat;
+      pointer-events: none;
+    }
+
+    /* Dark vignette top and bottom */
+    .parallax-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 25%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .parallax-bg::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(to bottom, transparent, #020304);
+      pointer-events: none;
+    }
+
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.5s;
+    }
+
+    nav.scrolled {
+      background: rgba(8, 12, 18, 0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      color: var(--gold);
+      text-decoration: none;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.6);
+    }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 1.5px;
+      background: var(--cream);
+      transition: 0.3s;
+    }
+
+    /* ============================================
+       THE SURFACE — sunset sky, horizon, water
+       ============================================ */
+    .surface {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    /* Horizon line — removed */
+    .horizon { display: none; }
+
+    .surface h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 40px rgba(219, 160, 80, 0.2);
+    }
+
+    .hero-sub {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+      letter-spacing: 0.03em;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-style: italic;
+      letter-spacing: 0.1em;
+      animation: bob 2.5s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 48px;
+      border: 1px solid rgba(245, 240, 232, 0.4);
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn:hover {
+      background: rgba(245, 240, 232, 0.1);
+      border-color: rgba(245, 240, 232, 0.6);
+    }
+
+    .btn-solid {
+      background: var(--gold);
+      color: #0a0e14;
+      border-color: var(--gold);
+    }
+
+    .btn-solid:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+    }
+
+    /* ============================================
+       SUBMERGING — wave transition
+       ============================================ */
+    .submersion {
+      position: relative;
+      height: 150px;
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+
+    .submersion svg {
+      position: absolute;
+      top: -2px;
+      width: 100%;
+      height: 80px;
+    }
+
+    /* ============================================
+       DEPTH LAYERS
+       ============================================ */
+
+    /* Progressive veil — let the image breathe up top, darken only at depth */
+    .layer-shallow {
+      background: transparent;
+      padding: 80px 40px 100px;
+      position: relative;
+    }
+
+    .layer-mid {
+      background: linear-gradient(180deg, transparent 0%, rgba(2, 3, 4, 0.15) 100%);
+      padding: 80px 40px 100px;
+      position: relative;
+    }
+
+    .layer-deep {
+      background: linear-gradient(180deg, rgba(2, 3, 4, 0.15) 0%, rgba(2, 3, 4, 0.4) 100%);
+      padding: 80px 40px 100px;
+      position: relative;
+    }
+
+    .layer-abyss {
+      background: linear-gradient(180deg, rgba(2, 3, 4, 0.4) 0%, rgba(2, 3, 4, 0.7) 100%);
+      padding: 80px 40px 100px;
+      position: relative;
+    }
+
+    .layer-floor {
+      background: linear-gradient(180deg, rgba(2, 3, 4, 0.7) 0%, rgba(2, 3, 4, 0.9) 100%);
+      padding: 80px 40px 100px;
+      position: relative;
+    }
+
+    /* Light from above removed — image handles depth */
+
+    /* CONTENT */
+    .content {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      font-style: italic;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    }
+
+    .section-intro {
+      font-size: 1.15rem;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 640px;
+      line-height: 1.8;
+      margin-bottom: 56px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    }
+
+    /* READINGS */
+    .readings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .reading-card {
+      border: none;
+      padding: 48px 40px;
+      transition: all 0.4s;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .reading-card:hover {
+      background: rgba(0, 0, 0, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .reading-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    }
+
+    .reading-card .tagline {
+      font-size: 0.9rem;
+      color: var(--gold);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .reading-card p {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.7;
+    }
+
+    .reading-card-special {
+      grid-column: 1 / -1;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* EXPECT */
+    .expect-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 48px;
+    }
+
+    .expect-item {
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 40px 32px;
+    }
+
+    .expect-item h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: #ffffff;
+      margin-bottom: 12px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+    }
+
+    .expect-item p {
+      font-size: 1.0rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.7;
+    }
+
+    /* SPECIAL READING (pendulum) */
+    .special-reading {
+      border: none;
+      padding: 48px 40px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .special-reading .section-title { margin-bottom: 20px; }
+
+    .special-reading p {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .special-reading .price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-top: 24px;
+    }
+
+    /* PRICING */
+    .pricing-box {
+      text-align: center;
+      padding: 48px 40px;
+      border: none;
+      background: transparent;
+    }
+
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .price-label {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .pricing-box p {
+      font-size: 1.0rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .pricing-box .btn { margin-top: 32px; }
+
+    /* TESTIMONIALS CAROUSEL */
+    .testimonials-section {
+      max-width: 750px;
+      margin: 80px auto 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .testimonials-track {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .testimonials-slide {
+      display: none;
+      animation: fadeSlide 0.6s ease;
+    }
+
+    .testimonials-slide.active {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .testimonials-slide blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      font-style: italic;
+      color: #ffffff;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .testimonials-slide cite {
+      font-family: 'Outfit', sans-serif;
+      font-style: normal;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.05em;
+    }
+
+    .testimonials-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .testimonials-nav button {
+      background: none;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      color: var(--gold);
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .testimonials-nav button:hover {
+      background: rgba(201, 168, 76, 0.1);
+      border-color: var(--gold);
+    }
+
+    .testimonials-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .testimonials-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(201, 168, 76, 0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .testimonials-dots span.active {
+      background: var(--gold);
+    }
+
+    /* STORY */
+    .story-text {
+      columns: 2;
+      column-gap: 48px;
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.85;
+    }
+
+    .story-text p {
+      margin-bottom: 20px;
+      break-inside: avoid;
+    }
+
+    /* BOOKING */
+    .booking {
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .booking .section-title { margin-bottom: 40px; }
+
+    .form-group {
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--cream);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      cursor: pointer;
+    }
+
+    .form-group select option {
+      background: #0a0e14;
+      color: var(--cream);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .booking .btn {
+      width: 100%;
+      margin-top: 8px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 48px 40px;
+      background: #010202;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.05em;
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* BUBBLES */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      animation: rise linear infinite;
+    }
+
+    @keyframes rise {
+      0% { transform: translateX(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 0.6; }
+      100% { transform: translateX(var(--drift)) scale(0.5); opacity: 0; bottom: 100%; }
+    }
+
+    /* PRICING + SPECIAL READING SIDE BY SIDE */
+    .pricing-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    /* BIOLUMINESCENT PARTICLES */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float-particle linear infinite;
+    }
+
+    @keyframes float-particle {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(-200px) translateX(30px); opacity: 0; }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .hamburger { display: flex; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(8, 12, 18, 0.97);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        padding: 24px;
+        gap: 20px;
+        border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+      }
+
+      .nav-links.open { display: flex; }
+
+      .layer-shallow,
+      .layer-mid,
+      .layer-deep,
+      .layer-abyss,
+      .layer-floor {
+        padding: 60px 24px 80px;
+      }
+
+      .readings-grid { grid-template-columns: 1fr; }
+      .expect-grid { grid-template-columns: 1fr; gap: 32px; }
+      .pricing-row { grid-template-columns: 1fr; }
+      .story-text { columns: 1; }
+      .reading-card { padding: 36px 28px; }
+      .special-reading { padding: 40px 28px; }
+      .pricing-box { padding: 48px 28px; }
+      .scroll-hint {
+        display: flex;
+        font-size: 1.4rem;
+        bottom: 24px;
+      }
+
+      .nav-brand {
+        font-size: 1.4rem;
+        color: #ffffff;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7);
+      }
+
+      .parallax-bg::before {
+        height: 35%;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PARALLAX OCEAN BACKGROUND -->
+  <div class="parallax-bg"></div>
+
+  <div class="page-content">
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">Tarot With Priestess</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#readings">Readings</a></li>
+      <li><a href="#story">My Story</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#book">Book</a></li>
+    </ul>
+  </nav>
+
+  <!-- THE SURFACE — sunset sky, horizon, ocean -->
+  <section class="surface">
+    <div class="horizon"></div>
+    <h1>Go Underneath.</h1>
+    <p class="hero-sub">A structured approach to the questions you can't google.</p>
+    <a href="#book" class="btn">Book a Reading</a>
+    <div class="scroll-hint">
+      <span>Descend</span>
+      <span style="font-size:1.6rem;">&#8595;</span>
+    </div>
+  </section>
+
+  <!-- WAVE — breaking through the surface -->
+  <div class="submersion">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,0 C240,60 480,80 720,50 C960,20 1200,60 1440,30 L1440,0 L0,0 Z" fill="transparent"/>
+      <path d="M0,0 C360,50 720,70 1080,40 C1260,25 1380,35 1440,20 L1440,0 L0,0 Z" fill="transparent"/>
+    </svg>
+  </div>
+
+  <!-- SHALLOW — Readings + Testimonials -->
+  <div class="layer-shallow" id="readings">
+    <div class="content">
+      <div class="reveal">
+        <div class="section-label">Readings</div>
+        <h2 class="section-title">What would you like to uncover?</h2>
+        <p class="section-intro">A few of my favorite spreads and techniques, all developed by me. Think of it as a framework for self-inquiry &mdash; structured enough to be useful, open enough to surprise you. Our conversation prior to the reading will help us refine our strategy.</p>
+      </div>
+
+      <div class="readings-grid">
+        <div class="reading-card reveal">
+          <h3>Life Inventory</h3>
+          <div class="tagline">Time to figure out what's next?</div>
+          <p>Does it slap? Let's make it slap harder. Or is everything FUBAR? Let's unpack it back into recognition. We'll look at your communication skills, your heartspace, your sex drive, and your money &mdash; to make it make sense.</p>
+        </div>
+        <div class="reading-card reveal">
+          <h3>Career Ikigai</h3>
+          <div class="tagline">Passion, purpose, and cash-money?</div>
+          <p>Ikigai is a Japanese term that blends two words: &ldquo;iki&rdquo; (to live) and &ldquo;gai&rdquo; (a raison d'&ecirc;tre). It's the venn diagram of multiple vectors of meaning in your life. At the dead center lie your purpose and joy.</p>
+        </div>
+        <div class="reading-card reveal">
+          <h3>Heart Stoppers</h3>
+          <div class="tagline">Is it love? And why am I blocking it?</div>
+          <p>We'll look at your path. We'll look at your partner's path. We'll sketch out where you are, what's resonating, what's pulling you apart, and what to do next.</p>
+        </div>
+        <div class="reading-card reveal">
+          <h3>Conversational Tarot</h3>
+          <div class="tagline">Sometimes you just need to talk.</div>
+          <p>Not sure where to begin? No problem. Start with a single question and see where it takes you. We'll keep pulling cards until they spill all the tea and you feel complete.</p>
+        </div>
+        <div class="reading-card reading-card-special reveal">
+          <div class="section-label">Special Reading</div>
+          <h3>The Pendulum</h3>
+          <div class="tagline">Let the universe do the picking.</div>
+          <p>Letting the pendulum pick the cards seems to add an element of prescience. When I started experimenting with the pendulum on simple yes/no questions, it consistently got things right &mdash; even in a controlled, repeatable experiment. It's genuinely weird. I'm a data person at heart. I don't understand why this works. But the results are consistent enough that I can't ignore them.</p>
+          <div class="tagline" style="margin-top: 16px; margin-bottom: 0;">+$50 add-on</div>
+        </div>
+      </div>
+
+      <!-- Testimonials right after readings -->
+      <div class="testimonials-section reveal">
+        <div class="section-label">Client Experiences</div>
+        <div class="testimonials-track">
+
+          <div class="testimonials-slide active">
+            <blockquote>&ldquo;I had my first tarot reading over Zoom, and I went in with an open mind but low expectations. Surprisingly, it revealed things about my relationship that I hadn't fully acknowledged, yet resonated deeply. The reading helped me confront emotions I had been denying, which ultimately allowed me to connect with my partner on a much deeper level.&rdquo;</blockquote>
+            <cite>&mdash; Mina, Salt Lake City, UT</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;Priestess read my tarot cards one evening, totally spontaneously, at a cafe in Tzunun&aacute; on Lake Atitl&aacute;n. Over 2+ hours and several cups of cacao, she explained where I was in my life, what the cards told her was holding me back, and where she thought I could go from here. I was so impressed by the level of thoughtful analysis that she brought to the reading &mdash; she spent a ton of time reflecting on the cards and exploring various interpretations. But that's not all. I disagreed with Priestess about one of her conclusions &mdash; and lo and behold, one month later, her prediction came true. If you're going to get a tarot card reading, I would highly recommend Priestess' services. You will get an incredibly detailed and insightful reading that you simply cannot get anywhere else.&rdquo;</blockquote>
+            <cite>&mdash; India, Los Angeles, CA</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;Priestess taught me a lot about the history of tarot and helped me understand the energy I was putting out into the world. It was great to get her perspective! I felt very safe and heard throughout the reading.&rdquo;</blockquote>
+            <cite>&mdash; Akhil, Austin, TX</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;Priestess is a brilliant and gifted tarot reader. She is insightful, intuitive, and made me feel comfortable throughout the reading by explaining everything in great detail. Our session gave me new perspectives and guidance that I truly needed. Each card resonated deeply with my situation, and their interpretations gave me valuable clarity on what moves to make here. I highly recommend Priestess for anyone looking for a bit of magic and spiritual insight!&rdquo;</blockquote>
+            <cite>&mdash; Misty, Austin, TX</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;Priestess gave me a reading while I was crashing at her place before I moved back to Europe from Austin last year. It was a very tumultuous time in my life, I didn't have a plan for when I'd land, and I felt like I needed some support in feeling grounded and ready to move on. She did a 4x3 reading and I felt more seen with her than any other person who's ever read for me. I took a picture of the cards and still reference it from time to time. Year and a half later, I'm happy to report, things also worked out, though I wasn't attached to that outcome. Highly recommend! Xx&rdquo;</blockquote>
+            <cite>&mdash; Athena, Athens, Greece</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;I recently had a tarot reading with Priestess to get insights into my job search, and it was truly enlightening. She pinpointed exactly what was blocking my progress and provided clear, actionable steps to move forward with confidence. Priestess' intuitive guidance and deep understanding made the experience incredibly valuable. I highly recommend her to anyone seeking clarity and direction in their career or life!&rdquo;</blockquote>
+            <cite>&mdash; Katya, Tulum, Mexico</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;Priestess is very intuitive and sharp. She has a way of seeing the big picture and allowing the necessary message to come through the cards, and she does not hold back! She is grounded, insightful and her readings are a gift to us all. Thanks for being such a beautiful channel.&rdquo;</blockquote>
+            <cite>&mdash; Naomi, Austin, TX</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;Priestess is an incredibly multi-talented woman, excelling in areas like business, community building, tarot, etc. I honestly don't know how she does it all! At an event I hosted, she gave tarot readings and had a constant line of people waiting for her. The sacred space she created was stunning, and she was among the best-dressed at our event. Her reading for me was awe-inspiring, giving me clear guidance for my professional path. I can't recommend her enough. Priestess is a true professional who will go above and beyond at your most unforgettable events. She's an EPIC collaborator!&rdquo;</blockquote>
+            <cite>&mdash; Anastasia, Austin, TX</cite>
+          </div>
+
+          <div class="testimonials-slide">
+            <blockquote>&ldquo;The moment you meet Priestess, you can feel her genuine interest, attention, generosity and love. This care translates fully to her tarot sessions which are deep, resonant, and communicated with both directness, honesty and sensitivity.&rdquo;</blockquote>
+            <cite>&mdash; Erika, Austin, TX</cite>
+          </div>
+
+        </div>
+
+        <div class="testimonials-nav">
+          <button onclick="changeSlide(-1)" aria-label="Previous">&larr;</button>
+          <div class="testimonials-dots">
+            <span class="active" onclick="goToSlide(0)"></span>
+            <span onclick="goToSlide(1)"></span>
+            <span onclick="goToSlide(2)"></span>
+            <span onclick="goToSlide(3)"></span>
+            <span onclick="goToSlide(4)"></span>
+            <span onclick="goToSlide(5)"></span>
+            <span onclick="goToSlide(6)"></span>
+            <span onclick="goToSlide(7)"></span>
+            <span onclick="goToSlide(8)"></span>
+          </div>
+          <button onclick="changeSlide(1)" aria-label="Next">&rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MID-WATER — Experience -->
+  <div class="layer-mid" id="expect">
+    <div class="content">
+      <div class="reveal">
+        <div class="section-label">Experience</div>
+        <h2 class="section-title">What to expect</h2>
+      </div>
+
+      <div class="expect-grid">
+        <div class="expect-item reveal">
+          <h4>Duration</h4>
+          <p>Plan to dedicate approximately one hour to your reading, and more if you'd like to include the pendulum.</p>
+        </div>
+        <div class="expect-item reveal">
+          <h4>Format</h4>
+          <p>We can meet in person or over Zoom. I'll spend the first ten minutes talking to you to understand what's alive in your world and guide you toward a reading that fits.</p>
+        </div>
+        <div class="expect-item reveal">
+          <h4>Confidentiality</h4>
+          <p>Everything remains confidential. I approach this with the ethical expectations of a therapy session. I invite you to bring a similar level of presence and focus.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEEP — Special Reading + Pricing side by side -->
+  <div class="layer-deep" id="pricing">
+    <div class="content">
+      <div class="pricing-box reveal">
+        <div class="section-label">Investment</div>
+        <div class="price-amount">$325</div>
+        <div class="price-label">per reading</div>
+        <p>Payment via Venmo or PayPal at the time of scheduling.</p>
+        <p>Full refund or reschedule with 24+ hours notice. 50% refund for rescheduling under 24 hours. No refund for cancellations under 24 hours.</p>
+        <a href="#book" class="btn btn-solid">Book Now</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABYSS — My Story -->
+  <div class="layer-abyss" id="story">
+    <div class="content">
+      <div class="reveal">
+        <div class="section-label">About</div>
+        <h2 class="section-title">My Tarot Story</h2>
+      </div>
+      <div class="story-text reveal">
+        <p>I discovered tarot during one of the hardest periods of my life. After a devastating breakup and having to part ways with my therapist, I didn't have the energy to search for someone new to talk to. One evening, I glanced at my bookshelf and saw a tarot deck I'd owned for over a decade. I'd opened it maybe once in all the years I had it because I didn't know what I was looking at, nor was I particularly motivated to learn; I have always been more predisposed toward science and empiricism than woo.</p>
+
+        <p>I don't know what led me to reach for it then, but when I did, the art is what made it click. Tarot is a form of visual communication, using drawings and symbols to depict archetypal experiences through the unique lens of each artist's subjective interpretation of the human condition. I found myself conversing with the tarot deck, asking it questions I might direct toward a therapist, and noticing how adroitly the tarot illuminated my shadows.</p>
+
+        <p>I quickly acquired a few more decks. What fascinated me most was comparing them &mdash; card by card and suit by suit &mdash; studying how each artist interpreted the same archetypal experience in their own way. The variations offered a window into the artist's subconscious, revealing layers of meaning in the smallest details.</p>
+
+        <p>Tarot quickly became a new way for me to explore the emotions and revelations that follow a breakup, helping me make sense of my complex inner world in a way that felt insightful, personal, and unexpectedly rigorous.</p>
+
+        <p>From January, when I first leafed through that old deck, to February, when I was fully off-book and fluent, was a zero-to-sixty experience of the best kind of rabbit hole. Tarot had everything that appeals to the inveterate nerd in me: beautiful art, a complex structure, inherent ambiguity, and a rich history that weaves together culture, politics, mythology, religion, and esotericism.</p>
+
+        <p>I did not choose tarot. The tarot chose me and speaks through me &mdash; and by May I was so comfortable with its language that I was reading for crowds at a festival. Today, I'm not only a tarot reader but a tarot collector, with several hundred decks (many of which are quite rare) that represent as many art styles as points of view into who we are as a species.</p>
+
+        <p>You don't need to believe in anything. You just need a good question.</p>
+
+        <p>For me, tarot is not a magic key to the future. Rather, it is a quiet, gentle tool for reflection and introspection. It's a way to look at life's challenges from different perspectives, using symbolism to navigate the intricacies of our thoughts and emotions. My aim is to bring that same sense of curiosity and humility to each session, guiding you to explore the deeper meanings in your own journey, without judgment or predetermined answers &mdash; just a conversation between you, me, and the tarot's stained glass window unto the intuited world.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOOR — Booking -->
+  <div class="layer-floor" id="book">
+    <div class="content">
+      <div class="booking reveal">
+        <div class="section-label">Let's Begin</div>
+        <h2 class="section-title">Book a Reading</h2>
+
+        <form action="https://formsubmit.co/anastasiau@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="New Tarot Reading Request">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://tarotwithpriestess.com/#book">
+
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="reading">Reading Type</label>
+            <select id="reading" name="reading">
+              <option value="" disabled selected>Select a reading</option>
+              <option value="Life Inventory">Life Inventory</option>
+              <option value="Career Ikigai">Career Ikigai</option>
+              <option value="Heart Stoppers">Heart Stoppers</option>
+              <option value="Conversational Tarot">Conversational Tarot</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="pendulum">Add Pendulum (+$50)?</label>
+            <select id="pendulum" name="pendulum">
+              <option value="No">No</option>
+              <option value="Yes">Yes, add pendulum</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Anything you'd like to share?</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-solid">Send Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Tarot With Priestess. All rights reserved.</p>
+  </footer>
+
+  </div><!-- /page-content -->
+
+  <script>
+    // Nav scroll + parallax background
+    const parallaxBg = document.querySelector('.parallax-bg');
+    window.addEventListener('scroll', () => {
+      document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 60);
+      // Shift background position as user scrolls — slower than content for parallax
+      const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      parallaxBg.style.backgroundPosition = `center ${scrollPercent * 100}%`;
+    });
+
+    // Mobile menu
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.remove('open');
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Testimonials carousel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.testimonials-slide');
+    const dots = document.querySelectorAll('.testimonials-dots span');
+
+    function goToSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      dots[currentSlide].classList.remove('active');
+      currentSlide = n;
+      slides[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    }
+
+    function changeSlide(dir) {
+      let next = (currentSlide + dir + slides.length) % slides.length;
+      goToSlide(next);
+    }
+
+    // Auto-advance every 6 seconds
+    setInterval(() => changeSlide(1), 6000);
+
+    // Bioluminescent particles in deeper layers
+    function createParticles(container, count, color) {
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1;
+        p.style.cssText = `
+          width: ${size}px; height: ${size}px;
+          background: ${color};
+          box-shadow: 0 0 ${size * 3}px ${color};
+          left: ${Math.random() * 100}%;
+          top: ${Math.random() * 100}%;
+          animation-duration: ${Math.random() * 8 + 6}s;
+          animation-delay: ${Math.random() * 5}s;
+        `;
+        container.appendChild(p);
+      }
+    }
+
+    createParticles(document.querySelector('.layer-deep'), 5, 'rgba(201, 168, 76, 0.3)');
+    createParticles(document.querySelector('.layer-abyss'), 8, 'rgba(201, 168, 76, 0.25)');
+    createParticles(document.querySelector('.layer-floor'), 10, 'rgba(201, 168, 76, 0.4)');
+
+    // Air bubbles rising through layers
+    function createBubbles(container, count) {
+      for (let i = 0; i < count; i++) {
+        const b = document.createElement('div');
+        b.className = 'bubble';
+        const size = Math.random() * 12 + 4;
+        const drift = (Math.random() - 0.5) * 60;
+        b.style.cssText = `
+          width: ${size}px; height: ${size}px;
+          left: ${Math.random() * 100}%;
+          bottom: ${Math.random() * 30}%;
+          --drift: ${drift}px;
+          animation-duration: ${Math.random() * 6 + 4}s;
+          animation-delay: ${Math.random() * 8}s;
+        `;
+        container.appendChild(b);
+      }
+    }
+
+    createBubbles(document.querySelector('.surface'), 10);
+    createBubbles(document.querySelector('.submersion'), 15);
+    createBubbles(document.querySelector('.layer-shallow'), 25);
+    createBubbles(document.querySelector('.layer-mid'), 18);
+    createBubbles(document.querySelector('.layer-deep'), 10);
+    createBubbles(document.querySelector('.layer-abyss'), 5);
+  </script>
+
+</body>
+</html>
