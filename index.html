@@ -1081,8 +1081,19 @@
       goToSlide(next);
     }
 
-    // Auto-advance every 6 seconds
-    setInterval(() => changeSlide(1), 6000);
+    // Auto-advance; slower on mobile, pauses on user interaction
+    const isMobile = window.innerWidth <= 768;
+    let autoInterval = setInterval(() => changeSlide(1), isMobile ? 10000 : 6000);
+
+    function pauseAutoAdvance() {
+      clearInterval(autoInterval);
+      autoInterval = null;
+    }
+
+    // Pause when user manually navigates
+    document.querySelectorAll('.testimonials-nav button, .testimonials-dots span').forEach(el => {
+      el.addEventListener('click', pauseAutoAdvance);
+    });
 
     // Bioluminescent particles in deeper layers
     function createParticles(container, count, color) {
