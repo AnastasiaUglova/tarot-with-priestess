@@ -650,13 +650,11 @@
     /* SCROLL REVEAL */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transition: opacity 0.8s ease;
     }
 
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0);
     }
 
     /* BUBBLES */
@@ -1101,7 +1099,6 @@
     }
 
     // No auto-advance — users navigate manually with arrows/dots
-    });
 
     // Bioluminescent particles in deeper layers
     function createParticles(container, count, color) {
