@@ -242,6 +242,7 @@
       background: transparent;
       border: none;
       outline: none;
+      overflow: hidden;
     }
 
     .submersion svg {
@@ -260,24 +261,28 @@
       background: transparent;
       padding: 80px 40px 100px;
       position: relative;
+      overflow: hidden;
     }
 
     .layer-mid {
       background: linear-gradient(180deg, transparent 0%, rgba(2, 3, 4, 0.15) 100%);
       padding: 80px 40px 100px;
       position: relative;
+      overflow: hidden;
     }
 
     .layer-deep {
       background: linear-gradient(180deg, rgba(2, 3, 4, 0.15) 0%, rgba(2, 3, 4, 0.4) 100%);
       padding: 80px 40px 100px;
       position: relative;
+      overflow: hidden;
     }
 
     .layer-abyss {
       background: linear-gradient(180deg, rgba(2, 3, 4, 0.4) 0%, rgba(2, 3, 4, 0.7) 100%);
       padding: 80px 40px 100px;
       position: relative;
+      overflow: hidden;
     }
 
     .layer-floor {
@@ -669,10 +674,10 @@
     }
 
     @keyframes rise {
-      0% { transform: translateX(0) scale(1); opacity: 0; }
+      0% { transform: translateX(0) translateY(0) scale(1); opacity: 0; }
       10% { opacity: 1; }
       90% { opacity: 0.6; }
-      100% { transform: translateX(var(--drift)) scale(0.5); opacity: 0; bottom: 100%; }
+      100% { transform: translateX(var(--drift)) translateY(-100vh) scale(0.5); opacity: 0; }
     }
 
     /* PRICING + SPECIAL READING SIDE BY SIDE */
