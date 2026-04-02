@@ -1100,9 +1100,9 @@
       goToSlide(next);
     }
 
-    // Auto-advance; slower on mobile, pauses on user interaction
+    // Auto-advance on desktop only; disabled on mobile to prevent page scroll
     const isMobile = window.innerWidth <= 768;
-    let autoInterval = setInterval(() => changeSlide(1), isMobile ? 10000 : 6000);
+    let autoInterval = isMobile ? null : setInterval(() => changeSlide(1), 6000);
 
     function pauseAutoAdvance() {
       clearInterval(autoInterval);
