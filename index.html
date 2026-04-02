@@ -1100,18 +1100,7 @@
       goToSlide(next);
     }
 
-    // Auto-advance on desktop only; disabled on mobile to prevent page scroll
-    const isMobile = window.innerWidth <= 768;
-    let autoInterval = isMobile ? null : setInterval(() => changeSlide(1), 6000);
-
-    function pauseAutoAdvance() {
-      clearInterval(autoInterval);
-      autoInterval = null;
-    }
-
-    // Pause when user manually navigates
-    document.querySelectorAll('.testimonials-nav button, .testimonials-dots span').forEach(el => {
-      el.addEventListener('click', pauseAutoAdvance);
+    // No auto-advance — users navigate manually with arrows/dots
     });
 
     // Bioluminescent particles in deeper layers
