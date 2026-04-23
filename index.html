@@ -664,6 +664,16 @@
       font-family: 'Outfit', sans-serif;
     }
 
+    /* Honeypot — hidden from real users, filled by spam bots */
+    .honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     /* SUCCESS MODAL */
     .modal-overlay {
       position: fixed;
@@ -1130,9 +1140,11 @@
 
         <form id="booking-form" action="https://formsubmit.co/anastasiau@gmail.com" method="POST">
           <input type="hidden" name="_subject" value="New Tarot Reading Request">
-          <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_next" value="https://tarotwithpriestess.com/#book">
+
+          <!-- Honeypot: hidden from humans, bots fill it. FormSubmit drops submissions where this is non-empty. -->
+          <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
 
           <div class="form-group">
             <label for="name">Your Name</label>
@@ -1226,6 +1238,13 @@
 
     bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      // Honeypot: if bot filled the hidden field, pretend success and drop silently.
+      const honey = bookingForm.querySelector('input[name="_honey"]');
+      if (honey && honey.value) {
+        bookingForm.reset();
+        openModal();
+        return;
+      }
       const btn = bookingForm.querySelector('button[type="submit"]');
       const originalText = btn.textContent;
       btn.disabled = true;
